@@ -39,6 +39,7 @@ You use `assertForwardUrlMapping` to assert that a given URL maps to a given con
 static mappings = {
     "/actionOne"(controller: "simple", action: "action1")
     "/actionTwo"(controller: "simple", action: "action2")
+    "/actionThree"(controller: "simple", action: "action3", method: "POST")
 }
 ----
 
@@ -59,10 +60,13 @@ class UrlMappingsSpec extends Specification {
         expect:
         assertForwardUrlMapping("/actionOne", controller: 'simple', action: "action1")
         assertForwardUrlMapping("/actionTwo", controller: 'simple', action: "action2")
+        !assertForwardUrlMapping("/actionThree", controller: 'simple', action: "action3") // Won't match
+        assertForwardUrlMapping("/actionThree", controller: 'simple', action: "action3", method: "POST")
     }
 }
 ----
 
+IMPORTANT: When defining the HTTP method in the mappings it is also necessary to include it when testing.
 
 ==== Assert Reverse URL Mappings
 
